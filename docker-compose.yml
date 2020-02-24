@@ -1,0 +1,23 @@
+version: '3.7'
+services:
+  mysql:
+    container_name: example-mysql
+    image: mysql:8.0
+    restart: on-failure
+    environment:
+      MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD}
+
+  php:
+    container_name: example-php
+    build:
+      context: .
+      dockerfile: docker/php/Dockerfile
+    restart: on-failure
+    user: ${LOCAL_USER}
+
+  nginx:
+    container_name: example-nginx
+    image: nginx:1.15.3-alpine
+    restart: on-failure
+    depends_on:
+      - php
